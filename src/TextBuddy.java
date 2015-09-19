@@ -68,6 +68,7 @@ public class TextBuddy {
 	
 	
 	private static ArrayList<String> allText = new ArrayList<>();
+	private static Scanner scanner = new Scanner(System.in);
 	static String fileName;
 	private static String linesContainPara;
 	
@@ -76,7 +77,6 @@ public class TextBuddy {
 		ADD, DISPLAY, DELETE, CLEAR, SORT, SEARCH, EXIT, INVALID
 	};
 	
-	private static Scanner scanner = new Scanner(System.in);
 	
 
 	/**
@@ -148,14 +148,14 @@ public class TextBuddy {
 		}
 	}
 	
+	private static void showToUser(String text) {
+		System.out.println(text);
+	}
+	
 	public static String readUserCommand() throws IOException{
 		showToUser(ENTER_COMMAND);
 		String userCommand = scanner.nextLine();
 		return userCommand;
-	}
-	
-	private static void showToUser(String text) {
-		System.out.println(text);
 	}
 	
 	public static String executeCommand(String userCommand) throws IOException {
@@ -293,7 +293,7 @@ public class TextBuddy {
 	private static String search(String parameters) throws IOException{
 		if (hasPara(parameters)) {
 			return linesContainPara;
-		} else{
+		} else {
 			return String.format(SEARCH_FAILED, fileName, parameters);
 		}	
 	}
@@ -303,6 +303,7 @@ public class TextBuddy {
 		String thisLine;
 		int textIndex;
 		boolean isContain = false;
+		
 		for (int i = 0; i < allText.size() - 1; i++){
 			thisLine = allText.get(i);
 			if (thisLine.contains(parameters)){
@@ -320,7 +321,6 @@ public class TextBuddy {
 		}
 		
 		return isContain;
-		
 	}
 	
 	private static String removeFirstWord(String userCommand) {
