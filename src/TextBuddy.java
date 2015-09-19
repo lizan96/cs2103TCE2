@@ -54,12 +54,17 @@ public class TextBuddy {
 	// standard text message
 	private static final String WELCOME_MESSAGE = "Welcome to TextBuddy. %1$s is ready for use";
 	private static final String MESSAGE_INVALID_FORMAT = "invalid command format :%1$s";
+	
+	private static final String ENTER_COMMAND = "command:";
+	private static final String NO_INPUT_FILE_NAME = "NO_INPUT_FILE_NAME";
+	
 	private static final String TEXT_ADDED = "added to %1$s: “%2$s”";
 	private static final String TEXT_DELETED = "deleted from %1$s: “%2$s”";
 	private static final String TEXT_CLEARED = "all content deleted from %1$s";
 	private static final String TEXT_EMPTY = "%1$s is empty";
-	private static final String ENTER_COMMAND = "command:";
-	private static final String NO_INPUT_FILE_NAME = "NO_INPUT_FILE_NAME";
+	private static final String TEXT_SORTED = "all content from %1$s has been sorted";
+	private static final String SEARCH_FAILED = "%1$s does not contain %2$s";
+	
 	
 	private static ArrayList<String> allText = new ArrayList<>();
 	static String fileName;
@@ -170,6 +175,10 @@ public class TextBuddy {
 				return delete(parameters);
 			case CLEAR:
 				return clear();
+			case SORT:
+				return sort();
+			case SEARCH:
+				return search(parameters);
 			case EXIT:
 				saveTextToFile(fileName);
 				System.exit(0);
@@ -271,6 +280,34 @@ public class TextBuddy {
 		allText.clear();
 		saveTextToFile(fileName);
 		return String.format(TEXT_CLEARED, fileName);
+	}
+	
+	private static String sort() throws IOException{
+		allText.sort(null);
+		saveTextToFile(fileName);
+		return String.format(TEXT_SORTED, fileName);
+	}
+	
+	private static String search(String parameters) throws IOException{
+		String linesContainPara = "";
+		String thisLine;
+		int textIndex;
+		boolean isContain = false;
+		for (int i = 0; i < allText.size(); i++){
+			thisLine = allText.get(i);
+			if (thisLine.contains(parameters)){
+				isContain = true;
+				textIndex = i + 1;
+				linesContainPara += (textIndex + ". " + thisLine + "\n");
+			}
+		}
+		
+		if (isContain) {
+			return linesContainPara;
+		} else{
+			return String.format(SEARCH_FAILED, fileName, parameters);
+		}
+		
 	}
 	
 	private static String removeFirstWord(String userCommand) {
