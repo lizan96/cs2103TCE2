@@ -293,7 +293,7 @@ public class TextBuddy {
 		String thisLine;
 		int textIndex;
 		boolean isContain = false;
-		for (int i = 0; i < allText.size(); i++){
+		for (int i = 0; i < allText.size() - 1; i++){
 			thisLine = allText.get(i);
 			if (thisLine.contains(parameters)){
 				isContain = true;
@@ -301,6 +301,14 @@ public class TextBuddy {
 				linesContainPara += (textIndex + ". " + thisLine + "\n");
 			}
 		}
+		
+		textIndex = allText.size() - 1;
+		thisLine = allText.get(textIndex);
+		if (thisLine.contains(parameters)){
+			isContain = true;
+			linesContainPara += (allText.size() + ". " + thisLine);
+		}
+		
 		
 		if (isContain) {
 			return linesContainPara;
