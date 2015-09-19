@@ -87,7 +87,7 @@ public class TextBuddy {
 	 * @param fileName
 	 * @throws FileNotFoundException
 	 */
-	static void readFile(String fileName) throws FileNotFoundException{
+	static void readFile(String fileName) throws FileNotFoundException {
 		File file = new File(fileName); 
 		try {
 			file.createNewFile(); 
@@ -100,7 +100,7 @@ public class TextBuddy {
 		
 		while (scanFile.hasNext()) {
 			newLine = removeFirstWord(scanFile.nextLine());  // delete the index number
-			if (!newLine.isEmpty()){
+			if (!newLine.isEmpty()) {
 				allText.add(newLine);
 			}
 		}
@@ -114,11 +114,11 @@ public class TextBuddy {
 	 * @param fileName
 	 * @throws IOException
 	 */
-	private static void saveTextToFile(String fileName) throws IOException{
+	private static void saveTextToFile(String fileName) throws IOException {
 		PrintWriter writer = new PrintWriter(fileName);
 		
 		int textIndex;
-		for (int i = 0; i < allText.size(); i++){
+		for (int i = 0; i < allText.size(); i++) { 
 			textIndex = i + 1; 
 			writer.print(textIndex + ". ");
 			writer.println(allText.get(i)); 
@@ -136,7 +136,7 @@ public class TextBuddy {
 		return fileName;
 	}
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 		fileName = readFileName(args);
 		readFile(fileName);
 		String welcome = String.format(WELCOME_MESSAGE, fileName);
@@ -152,14 +152,14 @@ public class TextBuddy {
 		System.out.println(text);
 	}
 	
-	public static String readUserCommand() throws IOException{
+	public static String readUserCommand() throws IOException {
 		showToUser(ENTER_COMMAND);
 		String userCommand = scanner.nextLine();
 		return userCommand;
 	}
 	
 	public static String executeCommand(String userCommand) throws IOException {
-		if (userCommand.trim().equals("")){
+		if (userCommand.trim().equals("")) {
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
 		
@@ -199,13 +199,13 @@ public class TextBuddy {
 			return COMMAND_TYPE.ADD;
 		} else if (commandTypeString.equalsIgnoreCase("display")) {
 			return COMMAND_TYPE.DISPLAY;
-		} else if (commandTypeString.equalsIgnoreCase("delete")){
+		} else if (commandTypeString.equalsIgnoreCase("delete")) {
 			return COMMAND_TYPE.DELETE;
-		} else if (commandTypeString.equalsIgnoreCase("sort")){
+		} else if (commandTypeString.equalsIgnoreCase("sort")) {
 			return COMMAND_TYPE.SORT;
-		} else if (commandTypeString.equalsIgnoreCase("search")){
+		} else if (commandTypeString.equalsIgnoreCase("search")) {
 			return COMMAND_TYPE.SEARCH;
-		} else if (commandTypeString.equalsIgnoreCase("clear")){	
+		} else if (commandTypeString.equalsIgnoreCase("clear")) {	
 			return COMMAND_TYPE.CLEAR;
 		} else if (commandTypeString.equalsIgnoreCase("exit")) {
 		 	return COMMAND_TYPE.EXIT;
@@ -214,7 +214,7 @@ public class TextBuddy {
 		}
 	}
 	
-	private static String addText(String parameters) throws IOException{
+	private static String addText(String parameters) throws IOException {
 		allText.add(parameters);
 		saveTextToFile(fileName);
 		return String.format(TEXT_ADDED, fileName, parameters);
@@ -224,9 +224,8 @@ public class TextBuddy {
 	 * Display the existing texts with index.
 	 * If there is nothing in the text, return text is empty
 	 */
-
-	public static String display(){
-		if (allText.isEmpty()){
+	public static String display() {
+		if (allText.isEmpty()) {
 			return String.format(TEXT_EMPTY, fileName);
 		} else {
 			return textContent();
@@ -238,12 +237,12 @@ public class TextBuddy {
 	 * 
 	 * @return displayTextContent
 	 */
-	private static String textContent(){
+	private static String textContent() {
 		String displayTextContent = "";
 		int textIndex;
 		
 		// add text expect the last line which does not to start a new line.
-		for (int i = 0;i < (allText.size() - 1); i++){
+		for (int i = 0; i < (allText.size() - 1); i++) {
 			textIndex = i + 1;
 			displayTextContent += (textIndex + ". " + allText.get(i) + "\n");
 		}
@@ -261,7 +260,7 @@ public class TextBuddy {
 	 * @return TEXT_DELETED message
 	 * @throws IOException
 	 */
-	private static String delete(String parameters) throws IOException{
+	private static String delete(String parameters) throws IOException {
 		int deleteIndex = (Integer.valueOf(parameters) - 1);
 		String deleteText = allText.get(deleteIndex);
 		allText.remove(deleteIndex);
@@ -274,7 +273,7 @@ public class TextBuddy {
 	 * 
 	 * @return TEXT_CLEARED message
 	 */
-	private static String clear() throws IOException{
+	private static String clear() throws IOException {
 		allText.clear();
 		saveTextToFile(fileName);
 		return String.format(TEXT_CLEARED, fileName);
@@ -284,13 +283,13 @@ public class TextBuddy {
 	 * sort lines alphabetically.
 	 * 
 	 */
-	private static String sort() throws IOException{
+	private static String sort() throws IOException {
 		allText.sort(null);
 		saveTextToFile(fileName);
 		return String.format(TEXT_SORTED, fileName);
 	}
 	
-	private static String search(String parameters) throws IOException{
+	private static String search(String parameters) throws IOException {
 		if (hasPara(parameters)) {
 			return linesContainPara;
 		} else {
@@ -298,15 +297,15 @@ public class TextBuddy {
 		}	
 	}
 	
-	private static boolean hasPara(String parameters){
+	private static boolean hasPara(String parameters) {
 		linesContainPara = "";
 		String thisLine;
 		int textIndex;
 		boolean isContain = false;
 		
-		for (int i = 0; i < allText.size() - 1; i++){
+		for (int i = 0; i < allText.size() - 1; i++) {
 			thisLine = allText.get(i);
-			if (thisLine.contains(parameters)){
+			if (thisLine.contains(parameters)) {
 				isContain = true;
 				textIndex = i + 1;
 				linesContainPara += (textIndex + ". " + thisLine + "\n");
@@ -315,7 +314,7 @@ public class TextBuddy {
 		
 		textIndex = allText.size() - 1;
 		thisLine = allText.get(textIndex);
-		if (thisLine.contains(parameters)){
+		if (thisLine.contains(parameters)) {
 			isContain = true;
 			linesContainPara += (allText.size() + ". " + thisLine);
 		}
@@ -332,4 +331,3 @@ public class TextBuddy {
 		return commandTypeString;
 	}
 }
-	
