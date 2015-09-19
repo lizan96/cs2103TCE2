@@ -10,8 +10,9 @@ import java.util.Scanner;
  *  This class is used to store and retrieve the text that the user adds in.
  * The user can create a file with any name. If the file name has already existed, then all the 
  * following action will be done on the existed file. Otherwise, a new file will be created.
- * The user can add, delete and clear the texts as well as see the texts by display it.
- * The file will be saved after every add, delete and clear action as well as exit. 
+ * The user can add, delete, clear, sort and search the texts as well as see the texts by display it.
+ * The user will receive a feedback message after each command.
+ * The file will be saved after every action.
  * 
  * The command format is given by the example interaction below:
 
@@ -68,6 +69,7 @@ public class TextBuddy {
 	
 	private static ArrayList<String> allText = new ArrayList<>();
 	static String fileName;
+	private static String linesContainPara;
 	
 	// These are the possible command types
 	enum COMMAND_TYPE {
@@ -75,6 +77,7 @@ public class TextBuddy {
 	};
 	
 	private static Scanner scanner = new Scanner(System.in);
+	
 
 	/**
 	 * Check whether the file with the specific file name has existed.
@@ -220,8 +223,6 @@ public class TextBuddy {
 	/**
 	 * Display the existing texts with index.
 	 * If there is nothing in the text, return text is empty
-	 * 
-	 * @return 
 	 */
 
 	public static String display(){
@@ -268,13 +269,10 @@ public class TextBuddy {
 		return String.format(TEXT_DELETED, fileName, deleteText);
 	}
 	
-	
-	
 	/**
-	 * Clear all the text in arrayList.
+	 * Clear all the text in arrayList and the file.
 	 * 
 	 * @return TEXT_CLEARED message
-	 * @throws IOException
 	 */
 	private static String clear() throws IOException{
 		allText.clear();
@@ -282,6 +280,10 @@ public class TextBuddy {
 		return String.format(TEXT_CLEARED, fileName);
 	}
 	
+	/**
+	 * sort lines alphabetically.
+	 * 
+	 */
 	private static String sort() throws IOException{
 		allText.sort(null);
 		saveTextToFile(fileName);
@@ -289,7 +291,15 @@ public class TextBuddy {
 	}
 	
 	private static String search(String parameters) throws IOException{
-		String linesContainPara = "";
+		if (hasPara(parameters)) {
+			return linesContainPara;
+		} else{
+			return String.format(SEARCH_FAILED, fileName, parameters);
+		}	
+	}
+	
+	private static boolean hasPara(String parameters){
+		linesContainPara = "";
 		String thisLine;
 		int textIndex;
 		boolean isContain = false;
@@ -309,12 +319,7 @@ public class TextBuddy {
 			linesContainPara += (allText.size() + ". " + thisLine);
 		}
 		
-		
-		if (isContain) {
-			return linesContainPara;
-		} else{
-			return String.format(SEARCH_FAILED, fileName, parameters);
-		}
+		return isContain;
 		
 	}
 	
